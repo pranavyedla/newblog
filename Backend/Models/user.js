@@ -72,7 +72,10 @@ UserSchema.methods.generateJwtFromUser  = function(){
         email : this.email
     }
 
-    const token = jwt.sign(payload ,JWT_SECRET_KEY, {expiresIn :JWT_EXPIRE} )
+    // JWT_EXPIRE is already in correct format (e.g., "360m" for 360 minutes)
+    const expiresIn = JWT_EXPIRE;
+
+    const token = jwt.sign(payload ,JWT_SECRET_KEY, {expiresIn : expiresIn} )
 
     return token 
 }
