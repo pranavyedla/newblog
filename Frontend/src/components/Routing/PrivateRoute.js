@@ -14,6 +14,7 @@ const PrivateRoute =( ) => {
     useEffect(() => {
 
        const controlAuth = async () => {
+        console.log("PrivateRoute: Checking authentication...")
         const config = {
             headers: {
             "Content-Type": "application/json",
@@ -22,6 +23,7 @@ const PrivateRoute =( ) => {
         };
         try {
             const { data } = await axios.get("/auth/private", config); 
+            console.log("PrivateRoute: Authentication successful", data.user)
 
             setAuth(true)
             setActiveUser(data.user)
@@ -29,6 +31,7 @@ const PrivateRoute =( ) => {
 
         } 
         catch (error) {
+            console.log("PrivateRoute: Authentication failed", error)
 
             localStorage.removeItem("authToken");
 
@@ -45,7 +48,11 @@ const PrivateRoute =( ) => {
     }, [bool,navigate])
 
 
-    return (auth ? <Outlet />  : <Home error={error} />)
+    if (!auth) {
+        return <Home error={error} />
+    }
+    
+    return <Outlet />
 }
 
 export default PrivateRoute;

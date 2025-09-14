@@ -5,10 +5,11 @@ import { AiOutlineUpload } from 'react-icons/ai'
 import Loader from "../GeneralScreens/Loader";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthContext';
+import { getProfileImageUrl } from '../../utils/imageUtils';
 import '../../Css/EditProfile.css'
 
 const EditProfile = () => {
-    const { activeUser, config } = useContext(AuthContext)
+    const { activeUser, setActiveUser, config } = useContext(AuthContext)
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate();
     const [username, setUsername] = useState('')
@@ -28,6 +29,9 @@ const EditProfile = () => {
 
         try {
             const { data } = await axios.post("/user/editProfile", formdata, config)
+
+            // Update the activeUser in context with the new data
+            setActiveUser(data.data)
 
             setSuccess('Edit Profile successfully ')
             setTimeout(() => {
@@ -119,7 +123,13 @@ const EditProfile = () => {
                                     <div class="absolute">
                                         Currently Image
                                     </div>
-                                    <img src={`http://localhost:5000/userPhotos/${previousPhoto}`} alt="userPhoto" />
+                                    <img 
+                                        src={getProfileImageUrl(previousPhoto, 'http://localhost:5000')} 
+                                        alt="userPhoto"
+                                        onError={(e) => {
+                                            e.target.src = '/default-avatar.svg';
+                                        }}
+                                    />
                                 </div>
 
                             </div>
@@ -130,9 +140,6 @@ const EditProfile = () => {
 
 
                         </form>
-
-
-
 
 
 

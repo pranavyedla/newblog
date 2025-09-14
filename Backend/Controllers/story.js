@@ -1,6 +1,5 @@
 const asyncErrorWrapper = require("express-async-handler")
 const Story = require("../Models/story");
-const deleteImageFile = require("../Helpers/Libraries/deleteImageFile");
 const {searchHelper, paginateHelper} =require("../Helpers/query/queryHelpers")
 
 const addStory = asyncErrorWrapper(async  (req,res,next)=> {
@@ -11,15 +10,18 @@ const addStory = asyncErrorWrapper(async  (req,res,next)=> {
    
     let readtime = Math.floor(wordCount /200)   ;
 
+    console.log("AddStory - req.savedStoryImageId:", req.savedStoryImageId);
 
     try {
         const newStory = await Story.create({
             title,
             content,
             author :req.user._id ,
-            image : req.savedStoryImage,
+            image : req.savedStoryImageId,
             readtime
         })
+
+        console.log("Created story with image ID:", newStory.image);
 
         return res.status(200).json({
             success :true ,
@@ -29,11 +31,7 @@ const addStory = asyncErrorWrapper(async  (req,res,next)=> {
     }
 
     catch(error) {
-
-        deleteImageFile(req)
-
         return next(error)
-        
     }
   
 })
@@ -139,24 +137,24 @@ const editStory  =asyncErrorWrapper(async(req,res,next)=>{
     const {slug } = req.params ; 
     const {title ,content ,image ,previousImage } = req.body;
 
+    console.log("EditStory - req.savedStoryImageId:", req.savedStoryImageId);
+
     const story = await Story.findOne({slug : slug })
 
     story.title = title ;
     story.content = content ;
-    story.image =   req.savedStoryImage ;
 
-    if( !req.savedStoryImage) {
-        // if the image is not sent
-        story.image = image
-    }
-    else {
-        // if the image sent
-        // old image locatıon delete
-       deleteImageFile(req,previousImage)
-
+    if( req.savedStoryImageId) {
+        // if the image is sent, update with new image ID
+        story.image = req.savedStoryImageId;
+        console.log("Updating story image with ID:", req.savedStoryImageId);
+    } else {
+        console.log("No new image uploaded, keeping existing image");
     }
 
     await story.save()  ;
+
+    console.log("Updated story image:", story.image);
 
     return res.status(200).
         json({
@@ -172,7 +170,8 @@ const deleteStory  =asyncErrorWrapper(async(req,res,next)=>{
 
     const story = await Story.findOne({slug : slug })
 
-    deleteImageFile(req,story.image) ; 
+    // Note: Image deletion from GridFS will be handled by a cleanup job
+    // or can be implemented separately if needed
 
     await story.remove()
 

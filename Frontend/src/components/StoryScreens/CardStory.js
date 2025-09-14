@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getStoryImageUrl } from '../../utils/imageUtils';
 
 const Story = ({ story }) => {
 
@@ -26,7 +27,14 @@ const Story = ({ story }) => {
         <div className="story-card">
             <Link to={`/story/${story.slug}`} className="story-link">
 
-                <img className=" story-image" src={`/storyImages/${story.image}`} alt={story.title} />
+                <img 
+                    className=" story-image" 
+                    src={getStoryImageUrl(story.image, 'http://localhost:5000')} 
+                    alt={story.title}
+                    onError={(e) => {
+                        e.target.src = '/default-story.svg';
+                    }}
+                />
                 <div className="story-content-wrapper">
 
                     <h5 className="story-title">

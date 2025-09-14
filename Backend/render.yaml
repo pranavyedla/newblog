@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: blog-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false  # You'll set this in Render dashboard
+      - key: JWT_SECRET_KEY
+        sync: false  # You'll set this in Render dashboard
+      - key: JWT_EXPIRE
+        value: 60m
+      - key: RESET_PASSWORD_EXPIRE
+        value: 3600000
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: EMAIL_USERNAME
+        sync: false  # You'll set this in Render dashboard
+      - key: EMAIL_PASS
+        sync: false  # You'll set this in Render dashboard
+      - key: FRONTEND_URL
+        sync: false  # You'll set this when you deploy frontend
+      - key: GRIDFS_BUCKET_NAME
+        value: uploads

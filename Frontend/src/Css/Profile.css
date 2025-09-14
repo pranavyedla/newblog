@@ -14,6 +14,29 @@
     margin-bottom: 1rem;
 }
 
+.profile-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #0063a5;
+    margin-bottom: 0.5rem;
+}
+
+.profile-image-section h3 {
+    margin: 0;
+    color: #333;
+    font-family: 'Mukta', sans-serif;
+    font-weight: bold;
+}
+
 .profile-top-wrap span {
     color: #0063a5;
     font-family: 'Mukta', sans-serif;

@@ -8,6 +8,7 @@ import { BiLogOut } from 'react-icons/bi'
 import { BsBookmarks } from 'react-icons/bs'
 import SkeletonElement from '../Skeletons/SkeletonElement';
 import { AuthContext } from '../../Context/AuthContext';
+import { getProfileImageUrl } from '../../utils/imageUtils';
 
 const Header = () => {
     const bool = localStorage.getItem("authToken") ? true : false
@@ -65,7 +66,13 @@ const Header = () => {
 
                                     :
 
-                                    <img src={`/userPhotos/${activeUser.photo}`} alt={activeUser.username} />
+                                    <img 
+                                        src={getProfileImageUrl(activeUser.photo, 'http://localhost:5000')} 
+                                        alt={activeUser.username}
+                                        onError={(e) => {
+                                            e.target.src = '/default-avatar.svg';
+                                        }}
+                                    />
 
                                 }
 

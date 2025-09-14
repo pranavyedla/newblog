@@ -6,11 +6,13 @@ const authRoute = require("./auth")
 const storyRoute = require("./story")
 const userRoute = require("./user")
 const commentRoute = require("./comment")
+const imageRoute = require("./image")
 
 router.use("/auth",authRoute)
 router.use("/story",storyRoute)
 router.use("/user",userRoute)
 router.use("/comment",commentRoute)
+router.use("/image",imageRoute)
 
 
 module.exports = router

@@ -1,6 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { AiFillStar } from 'react-icons/ai'
 import { BsThreeDots, BsBookmarkFill } from 'react-icons/bs'
+import { getStoryImageUrl } from '../../utils/imageUtils'
 
 const ReadListStoryItem = ({ story, editDate }) => {
 
@@ -32,9 +34,9 @@ const ReadListStoryItem = ({ story, editDate }) => {
 
                 <div className="story-med-block">
                     <div className="readList-story-title">
-                        <a href={`story/${story.slug}`}>
+                        <Link to={`/story/${story.slug}`}>
                             {story.title}
-                        </a>
+                        </Link>
                     </div>
                     <div className="readList-story-content">
 
@@ -45,7 +47,7 @@ const ReadListStoryItem = ({ story, editDate }) => {
                 </div>
 
                 <div className="story-bottom-block">
-                    <a href={`story/${story.slug}`}>
+                    <Link to={`/story/${story.slug}`}>
                         <span>
                             Read More
                         </span>
@@ -55,7 +57,7 @@ const ReadListStoryItem = ({ story, editDate }) => {
                         <span>
                             {story.readtime} min read
                         </span>
-                    </a>
+                    </Link>
 
                     <div>
 
@@ -72,7 +74,14 @@ const ReadListStoryItem = ({ story, editDate }) => {
 
             <section>
                 <div className="story-Image-Wrap">
-                    <img src={`/storyImages/${story.image}`} alt={story.title} width="180px" />
+                    <img 
+                        src={getStoryImageUrl(story.image, 'http://localhost:5000')} 
+                        alt={story.title} 
+                        width="180px"
+                        onError={(e) => {
+                            e.target.src = '/default-story.svg';
+                        }}
+                    />
                 </div>
 
             </section>

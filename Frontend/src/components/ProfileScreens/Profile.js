@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Loader from "../GeneralScreens/Loader";
 import { AuthContext } from '../../Context/AuthContext';
 import { FiArrowLeft } from 'react-icons/fi'
+import { getProfileImageUrl } from '../../utils/imageUtils';
 
 const Profile = () => {
     const { config } = useContext(AuthContext)
@@ -54,7 +55,17 @@ const Profile = () => {
                             <FiArrowLeft />
                         </Link>
                         <div className="profile-top-wrap">
-
+                            <div className="profile-image-section">
+                                <img 
+                                    src={getProfileImageUrl(user.photo, 'http://localhost:5000')} 
+                                    alt={user.username} 
+                                    className="profile-image"
+                                    onError={(e) => {
+                                        e.target.src = '/default-avatar.svg';
+                                    }}
+                                />
+                                <h3>{user.username}</h3>
+                            </div>
                             <span>
                                 Membership Information
                             </span>

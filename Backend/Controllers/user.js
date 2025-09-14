@@ -18,14 +18,25 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
 
     const { email, username } = req.body
 
-    const user = await User.findByIdAndUpdate(req.user.id, {
-        email, username,
-        photo: req.savedUserPhoto
-    },
+    console.log("EditProfile - req.savedUserPhotoId:", req.savedUserPhotoId);
+
+    const updateData = { email, username };
+    
+    // Only update photo if a new one was uploaded
+    if (req.savedUserPhotoId) {
+        updateData.photo = req.savedUserPhotoId;
+        console.log("Updating photo with ID:", req.savedUserPhotoId);
+    } else {
+        console.log("No new photo uploaded, keeping existing photo");
+    }
+
+    const user = await User.findByIdAndUpdate(req.user.id, updateData,
         {
             new: true,
             runValidators: true
         })
+
+    console.log("Updated user photo:", user.photo);
 
     return res.status(200).json({
         success: true,
@@ -100,7 +111,6 @@ const addStoryToReadList = asyncErrorWrapper(async (req, res, next) => {
     })
 
 })
-
 const readListPage = asyncErrorWrapper(async (req, res, next) => {
 
     const user = await User.findById(req.user.id)

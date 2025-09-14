@@ -9,6 +9,7 @@ import { FiEdit, FiArrowLeft } from 'react-icons/fi'
 import { FaRegComment } from 'react-icons/fa'
 import { BsBookmarkPlus, BsThreeDots, BsBookmarkFill } from 'react-icons/bs'
 import CommentSidebar from '../CommentScreens/CommentSidebar';
+import { getStoryImageUrl, getProfileImageUrl } from '../../utils/imageUtils';
 
 const DetailStory = () => {
   const [likeStatus, setLikeStatus] = useState(false)
@@ -49,6 +50,7 @@ const DetailStory = () => {
         setLikeStatus(data.likeStatus)
         setLikeCount(data.data.likeCount)
         setStoryLikeUser(data.data.likes)
+
         setLoading(false)
 
         const story_id = data.data._id;
@@ -70,13 +72,10 @@ const DetailStory = () => {
         setStory({})
         navigate("/not-found")
       }
-
     }
     getDetailStory();
 
   }, [slug, setLoading])
-
-
 
   const handleLike = async () => {
     setTimeout(() => {
@@ -174,7 +173,7 @@ const DetailStory = () => {
                   <ul>
                     {story.author &&
                       <li className='story-author-info'>
-                        <img src={`/userPhotos/${story.author.photo}`} alt={story.author.username} />
+                        <img src={getProfileImageUrl(story.author.photo, 'http://localhost:5000')} alt={story.author.username} />
                         <span className='story-author-username'>{story.author.username}  </span>
                       </li>
                     }
@@ -234,7 +233,13 @@ const DetailStory = () => {
               <div className='story-content' >
 
                 <div className="story-banner-img">
-                  <img src={`/storyImages/${story.image}`} alt={story.title} />
+                  <img 
+                    src={getStoryImageUrl(story.image, 'http://localhost:5000')} 
+                    alt={story.title}
+                    onError={(e) => {
+                        e.target.src = '/default-story.svg';
+                    }}
+                  />
 
                 </div>
 
@@ -316,6 +321,7 @@ const DetailStory = () => {
       }
     </>
   )
+
 }
 
 export default DetailStory;

@@ -66,9 +66,7 @@ const App = () => {
                                           <Route exact path='/story/:slug/addComment' element={<DetailStory />} />
                                     </Route>
 
-                                    <Route exact path='/readList' element={<PrivateRoute />}>
-                                          <Route exact path='/readList' element={<ReadListPage />} />
-                                    </Route>
+                                    <Route exact path='/readList' element={<ReadListPage />} />
 
                               </Route>
 

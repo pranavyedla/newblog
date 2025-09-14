@@ -4,6 +4,7 @@ import StarRating from './StarRating';
 import { BsShieldCheck, BsCheckAll } from 'react-icons/bs'
 import { IoAdd } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom';
+import { getProfileImageUrl } from '../../utils/imageUtils';
 import '../../Css/AddComment.css'
 
 const AddComment = ({ setSidebarShowStatus, slug, getStoryComments, activeUser, count }) => {
@@ -93,7 +94,7 @@ const AddComment = ({ setSidebarShowStatus, slug, getStoryComments, activeUser, 
 
 
                     <div className={showStatus ? 'activeuser-info ' : 'activeuser-info hidden '}>
-                        <img src={`/userPhotos/${activeUser.photo}`} alt={activeUser.username} />
+                        <img src={getProfileImageUrl(activeUser.photo, 'http://localhost:5000')} alt={activeUser.username} />
                         <span className='username'>{activeUser.username}  </span>
                     </div>
 

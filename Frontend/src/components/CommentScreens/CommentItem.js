@@ -7,6 +7,7 @@ import {
 import { BsThreeDots } from 'react-icons/bs'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { getProfileImageUrl } from '../../utils/imageUtils';
 
 const CommentItem = ({ comment, activeUser }) => {
     const navigate = useNavigate()
@@ -73,7 +74,14 @@ const CommentItem = ({ comment, activeUser }) => {
             <div className="comment-top-block">
 
                 <section>
-                    <img src={`/userPhotos/${comment.author.photo}`} alt={comment.author.username} width="35" />
+                    <img 
+                        src={getProfileImageUrl(comment.author.photo, 'http://localhost:5000')} 
+                        alt={comment.author.username} 
+                        width="35"
+                        onError={(e) => {
+                            e.target.src = '/default-avatar.svg';
+                        }}
+                    />
 
                     <div>
                         <span className='comment-author-username' >{comment.author.username}</span>
